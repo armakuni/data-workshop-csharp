@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ak.DataWorkshop.Tests", "Ak.DataWorkshop.Tests\Ak.DataWorkshop.Tests.csproj", "{5F889A6F-96F1-4DD1-96F4-FE1A4092074D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ak.DataWorkshop", "Ak.DataWorkshop\Ak.DataWorkshop.csproj", "{40B3FEC3-C724-4535-8B2C-FB6734B8F34B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F889A6F-96F1-4DD1-96F4-FE1A4092074D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F889A6F-96F1-4DD1-96F4-FE1A4092074D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F889A6F-96F1-4DD1-96F4-FE1A4092074D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F889A6F-96F1-4DD1-96F4-FE1A4092074D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40B3FEC3-C724-4535-8B2C-FB6734B8F34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40B3FEC3-C724-4535-8B2C-FB6734B8F34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40B3FEC3-C724-4535-8B2C-FB6734B8F34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40B3FEC3-C724-4535-8B2C-FB6734B8F34B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
