@@ -1,26 +1,24 @@
+using Ak.DataWorkshop.Actors;
+using Akka.Actor;
+using Akka.TestKit.NUnit;
+
 namespace Ak.DataWorkshop.Tests.Actors;
 
-using Ak.DataWorkshop.Actors;
-using System.Threading.Channels;
-
-public class AddingActorTests
+public class AddingActorTests : TestKit
 {
+
+
     [Test]
-    public async Task Adding()
+    public void Adding()
     {
-        var inbox = Channel.CreateUnbounded<object>();
-        var actorRef = Channel.CreateUnbounded<double>();
+        var subject = this.Sys.ActorOf<AddingActor>();
 
-        var subject = new AddingActor(inbox.Reader, actorRef.Writer);
-        var actorTask = Task.Factory.StartNew(async () => await subject.Start());
+        subject.Tell(1.0, ActorRefs.Nobody);
+        subject.Tell(3.0, ActorRefs.Nobody);
 
-        await inbox.Writer.WriteAsync(123);
-        await inbox.Writer.WriteAsync(333);
-        await inbox.Writer.WriteAsync("stop");
-
-        await actorTask;
-
-        (await actorRef.Reader.ReadAsync()).Should().Be(123);
-        (await actorRef.Reader.ReadAsync()).Should().Be(333);
+        this.WithinAsync(TimeSpan.FromSeconds(5), async () =>
+        {
+            (await subject.Ask<double>(new GetTotal())).Should().Be(4);
+        });
     }
 }

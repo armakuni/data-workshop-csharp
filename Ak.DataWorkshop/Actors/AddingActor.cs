@@ -1,30 +1,26 @@
 namespace Ak.DataWorkshop.Actors;
 
-using System.Threading.Channels;
-
-public sealed class AddingActor
+public sealed class AddingActor : ReceiveActor
 {
-    private readonly ChannelReader<object> input;
-    private readonly ChannelWriter<double> actorRef;
+    private readonly ILoggingAdapter log = Context.GetLogger();
 
-    public AddingActor(ChannelReader<object> input, ChannelWriter<double> actorRef)
-    {
-        this.input = input;
-        this.actorRef = actorRef;
-    }
+    private double total;
 
-    public async Task Start()
+    public AddingActor()
     {
-        while (true)
+        this.Receive<double>(message =>
         {
-            var message = await this.input.ReadAsync();
+            this.total += message;
+            this.log.Info($"Total is {this.total}");
+        });
 
-            if (message.Equals("stop"))
-            {
-                return;
-            }
-
-            Console.WriteLine("Hello, world!");
-        }
+        this.Receive<GetTotal>(_ =>
+        {
+            this.Sender.Tell(this.total);
+        });
     }
+}
+
+public sealed class GetTotal
+{
 }
