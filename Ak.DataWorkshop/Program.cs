@@ -17,14 +17,27 @@ hostBuilder.ConfigureServices(static (_, services) =>
         builder
             .WithActors(static (system, registry, resolver) =>
             {
+                var averagingActorProps = resolver.Props<AveragingActor>();
+                var averagingActor = system.ActorOf(averagingActorProps, "averaging-actor");
+
+                var ukRenewablesConsumptionActorProps = GetRenewableConsumptionActor.Props(averagingActor);
+                var ukRenewablesConsumptionActor = system.ActorOf(ukRenewablesConsumptionActorProps, "uk-renewable-consumption");
+
+                var usaRenewablesConsumptionActorProps = GetRenewableConsumptionActor.Props(averagingActor);
+                var usaRenewablesConsumptionActor = system.ActorOf(usaRenewablesConsumptionActorProps, "usa-renewable-consumption");
+
+                var countrySplitterActorProps = resolver.Props<CountrySplitterActor>(ukRenewablesConsumptionActor, usaRenewablesConsumptionActor);
+                var countrySplitterActor = system.ActorOf(countrySplitterActorProps, "country-splitter");
+
+                var repo = resolver.GetService<EnergyDataRepository>();
+                var energySpoutActorProps = EnergyDataSpoutActor.Props(countrySplitterActor, repo);
+                var energySpoutActor = system.ActorOf(energySpoutActorProps, "spout");
+
                 var addingActorProps = resolver.Props<AddingActor>();
                 var addingActor = system.ActorOf(addingActorProps, "adding-actor");
-
-                addingActor.Tell(0.5);
-                addingActor.Tell(0.1);
-                addingActor.Tell(0.4);
-                addingActor.Tell(10.0);
                 registry.Register<AddingActor>(addingActor);
+                registry.Register<EnergyDataSpoutActor>(energySpoutActor);
+                registry.Register<CountrySplitterActor>(countrySplitterActor);
             });
     });
 });
